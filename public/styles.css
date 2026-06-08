@@ -1,0 +1,784 @@
+/* ================================================
+   Grow A Garden - Custom Styles
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ================================================
+   CSS Variables
+   ================================================ */
+:root {
+    --primary: #2D6A4F;
+    --primary-light: #52B788;
+    --primary-dark: #1E4D3A;
+    --secondary: #1A759F;
+    --secondary-light: #34A0A4;
+    --secondary-dark: #0D3D5C;
+    --earth: #6C584C;
+    --earth-light: #A3B18A;
+    --earth-dark: #3D2E29;
+    --bg-light: #F8F9FA;
+    --bg-dark: #1E2321;
+}
+
+/* ================================================
+   Base Styles
+   ================================================ */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ================================================
+   Logo Typography
+   ================================================ */
+.logo-text {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(0.15);
+}
+
+.dark .logo-text {
+    filter: brightness(0) invert(1);
+}
+
+@media (min-width: 768px) {
+    .logo-text {
+        height: 40px;
+    }
+}
+
+/* Large logo for landing page */
+.logo-text-lg {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(0.15);
+}
+
+.dark .logo-text-lg {
+    filter: brightness(0) invert(1);
+}
+
+@media (min-width: 768px) {
+    .logo-text-lg {
+        height: 64px;
+    }
+}
+
+/* Sidebar logo */
+.logo-text-sidebar {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
+}
+
+@media (min-width: 1024px) {
+    .logo-text-sidebar {
+        height: 28px;
+    }
+}
+
+/* ================================================
+   Glassmorphism Cards
+   ================================================ */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.dark .glass-card {
+    background: rgba(30, 35, 33, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+}
+
+.dark .glass-card::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+/* LED Perimeter Effect */
+.glass-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1.5rem;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--led-color, var(--primary-light)), transparent, var(--led-color, var(--primary-light)));
+    -webkit-mask: linear-gradient(#fff 0 0) content-padding, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-padding, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.6;
+    transition: all 0.5s ease;
+    pointer-events: none;
+}
+
+.glass-card.status-optimal {
+    --led-color: var(--primary-light);
+}
+
+.glass-card.status-watering {
+    --led-color: var(--secondary-light);
+}
+
+.glass-card.status-alert {
+    --led-color: #ef4444;
+}
+
+.glass-card.status-alert::after {
+    animation: led-alert-pulse 1s ease-in-out infinite;
+}
+
+@keyframes led-alert-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+/* ================================================
+   Navigation Styles
+   ================================================ */
+.nav-btn {
+    color: var(--earth-dark);
+}
+
+.nav-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    box-shadow: 0 4px 15px rgba(45, 106, 79, 0.4);
+}
+
+.nav-btn.active svg {
+    stroke: white;
+}
+
+.sidebar-link {
+    color: var(--earth-dark);
+    background: transparent;
+}
+
+.sidebar-link:hover {
+    background: rgba(45, 106, 79, 0.1);
+}
+
+.sidebar-link.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
+}
+
+.dark .sidebar-link {
+    color: var(--earth-light);
+}
+
+.dark .sidebar-link:hover {
+    background: rgba(82, 183, 136, 0.15);
+}
+
+.dark .sidebar-link.active {
+    background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+}
+
+/* ================================================
+   Water Gauge Styles
+   ================================================ */
+.water-gauge {
+    position: relative;
+    width: 180px;
+    height: 234px;
+}
+
+.water-gauge-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 4px 20px rgba(26, 117, 159, 0.3));
+}
+
+.drop-outline {
+    color: var(--secondary-light);
+    opacity: 0.3;
+}
+
+.water-fill {
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: bottom;
+}
+
+.water-fill[data-level="0"] { transform: translateY(100%); }
+.water-fill[data-level="10"] { transform: translateY(90%); }
+.water-fill[data-level="20"] { transform: translateY(80%); }
+.water-fill[data-level="30"] { transform: translateY(70%); }
+.water-fill[data-level="40"] { transform: translateY(60%); }
+.water-fill[data-level="50"] { transform: translateY(50%); }
+.water-fill[data-level="60"] { transform: translateY(40%); }
+.water-fill[data-level="70"] { transform: translateY(30%); }
+.water-fill[data-level="80"] { transform: translateY(20%); }
+.water-fill[data-level="90"] { transform: translateY(10%); }
+.water-fill[data-level="100"] { transform: translateY(0%); }
+
+/* Wave Animations */
+.wave-path {
+    transition: d1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wave-1 {
+    animation: wave-animation-1 3s ease-in-out infinite;
+}
+
+.wave-2 {
+    animation: wave-animation-2 4s ease-in-out infinite;
+}
+
+@keyframes wave-animation-1 {
+    0%, 100% {
+        d: path("M0 100 Q 50 80, 100 100 T 200 100 L 200 260 L 0 260 Z");
+    }
+    50% {
+        d: path("M0 100 Q 50 120, 100 100 T 200 100 L 200 260 L 0 260 Z");
+    }
+}
+
+@keyframes wave-animation-2 {
+    0%, 100% {
+        d: path("M0 110 Q 50 130, 100 110 T 200 110 L 200 260 L 0 260 Z");
+    }
+    50% {
+        d: path("M0 110 Q 50 90, 100 110 T 200 110 L 200 260 L 0 260 Z");
+    }
+}
+
+/* Bubble Animations */
+.bubble {
+    animation: bubble-rise 4s ease-in infinite;
+}
+
+.bubble-1 { animation-delay: 0s; }
+.bubble-2 { animation-delay: 1s; }
+.bubble-3 { animation-delay: 2s; }
+.bubble-4 { animation-delay: 3s; }
+
+@keyframes bubble-rise {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-80px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* ================================================
+   Temperature Arc
+   ================================================ */
+.temp-arc {
+    animation: temp-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes temp-glow {
+    0% {
+        filter: drop-shadow(0 0 3px var(--primary-light));
+    }
+    100% {
+        filter: drop-shadow(0 0 8px var(--primary-light));
+    }
+}
+
+/* ================================================
+   Sun Animation
+   ================================================ */
+.sun-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.sun-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    border-radius: 50%;
+    box-shadow:
+        0 0 30px rgba(251, 191, 36, 0.6),
+        0 0 60px rgba(251, 191, 36, 0.4),
+        0 0 90px rgba(251, 191, 36, 0.2);
+    animation: sun-pulse 3s ease-in-out infinite;
+}
+
+.sun-ray {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(to top, #fbbf24, transparent);
+    border-radius: 2px;
+    transform-origin: center 50px;
+    animation: ray-pulse 2s ease-in-out infinite;
+}
+
+.ray-1 { transform: translate(-50%, -50%) rotate(0deg); animation-delay: 0s; }
+.ray-2 { transform: translate(-50%, -50%) rotate(45deg); animation-delay: 0.25s; }
+.ray-3 { transform: translate(-50%, -50%) rotate(90deg); animation-delay: 0.5s; }
+.ray-4 { transform: translate(-50%, -50%) rotate(135deg); animation-delay: 0.75s; }
+.ray-5 { transform: translate(-50%, -50%) rotate(180deg); animation-delay: 1s; }
+.ray-6 { transform: translate(-50%, -50%) rotate(225deg); animation-delay: 1.25s; }
+.ray-7 { transform: translate(-50%, -50%) rotate(270deg); animation-delay: 1.5s; }
+.ray-8 { transform: translate(-50%, -50%) rotate(315deg); animation-delay: 1.75s; }
+
+@keyframes sun-pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow:
+            0 0 30px rgba(251, 191, 36, 0.6),
+            0 0 60px rgba(251, 191, 36, 0.4);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        box-shadow:
+            0 0 40px rgba(251, 191, 36, 0.8),
+            0 0 80px rgba(251, 191, 36, 0.5);
+    }
+}
+
+@keyframes ray-pulse {
+    0%, 100% {
+        opacity: 0.6;
+        height: 20px;
+    }
+    50% {
+        opacity: 1;
+        height: 25px;
+    }
+}
+
+/* ================================================
+   Bio-Mechanical Toggle Switch
+   ================================================ */
+.bio-toggle {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.toggle-track {
+    width: 100px;
+    height: 50px;
+    background: linear-gradient(135deg, #3D2E29 0%, #6C584C 50%, #3D2E29 100%);
+    border-radius: 25px;
+    position: relative;
+    box-shadow:
+        inset 0 2px 10px rgba(0, 0, 0, 0.5),
+        0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
+}
+
+.toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #52B788 0%, #2D6A4F 100%);
+    border-radius: 50%;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow:
+        0 4px 15px rgba(45, 106, 79, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.thumb-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-icon {
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.toggle-led {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: #6C584C;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.toggle-glow {
+    position: absolute;
+    inset: -5px;
+    border-radius: 30px;
+    opacity: 0;
+    transition: all 0.4s ease;
+    pointer-events: none;
+}
+
+/* Toggle Active State */
+.bio-toggle input:checked + .toggle-track {
+    background: linear-gradient(135deg, #1A759F 0%, #34A0A4 50%, #1A759F 100%);
+}
+
+.bio-toggle input:checked + .toggle-track .toggle-thumb {
+    left: 53px;
+    background: linear-gradient(135deg, #34A0A4 0%, #1A759F 100%);
+}
+
+.bio-toggle input:checked + .toggle-track .toggle-led {
+    background: #34A0A4;
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.3),
+0 0 10px #34A0A4;
+}
+
+.bio-toggle input:checked + .toggle-track .toggle-glow {
+    opacity: 0.3;
+    background: radial-gradient(circle, #34A0A4, transparent);
+    animation: toggle-glow-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes toggle-glow-pulse {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+}
+
+/* ================================================
+   Water Flow Animation
+   ================================================ */
+.water-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #34A0A4, #1A759F);
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.water-particle-1 { left: 10%; animation: water-flow 2s ease-in-out infinite; animation-delay: 0s; }
+.water-particle-2 { left: 25%; animation: water-flow 2s ease-in-out infinite; animation-delay: 0.3s; }
+.water-particle-3 { left: 40%; animation: water-flow 2s ease-in-out infinite; animation-delay: 0.6s; }
+.water-particle-4 { left: 55%; animation: water-flow 2s ease-in-out infinite; animation-delay: 0.9s; }
+.water-particle-5 { left: 70%; animation: water-flow 2s ease-in-out infinite; animation-delay: 1.2s; }
+
+@keyframes water-flow {
+    0% {
+        transform: translateX(-50px) scale(0);
+        opacity: 0;
+    }
+    20% {
+        transform: translateX(0) scale(1);
+        opacity: 0.8;
+    }
+    80% {
+        transform: translateX(100px) scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(150px) scale(0);
+        opacity: 0;
+    }
+}
+
+/* ================================================
+   Scrollbar Styling
+   ================================================ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--earth-light);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--earth);
+}
+
+/* ================================================
+   Responsive Adjustments
+   ================================================ */
+@media (max-width: 768px) {
+    .glass-card {
+        padding: 1rem;
+        border-radius: 1rem;
+    }
+
+    .water-gauge {
+        width: 140px;
+        height: 182px;
+    }
+}
+
+/* ================================================
+   Dark Mode Specific
+   ================================================ */
+.dark .drop-outline {
+    color: var(--secondary-dark);
+    opacity: 0.2;
+}
+
+.dark .glass-card.status-optimal {
+    --led-color: var(--primary);
+}
+
+.dark .glass-card.status-watering {
+    --led-color: var(--secondary);
+}
+
+/* ================================================
+   Card Hover Effects
+   ================================================ */
+.glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.dark .glass-card:hover {
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ================================================
+   Float Animation
+   ================================================ */
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ================================================
+   Print Styles
+   ================================================ */
+@media print {
+    .glass-card {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+    }
+
+    .glass-card::after {
+        display: none;
+    }
+}
+
+/* ================================================
+   Form Styles
+   ================================================ */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 3rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1f2937;
+    background-color: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #2D6A4F;
+    box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+}
+
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"] {
+    color: #f9fafb;
+    background-color: #1f2937;
+    border-color: #374151;
+}
+
+.dark input[type="text"]:focus,
+.dark input[type="email"]:focus,
+.dark input[type="password"]:focus {
+    border-color: #52B788;
+    box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.1);
+}
+
+input::placeholder {
+    color: #9ca3af;
+}
+
+/* Button Styles */
+button[type="submit"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(to right, #2D6A4F, #52B788);
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    box-shadow: 0 10px 15px -3px rgba(45, 106, 79, 0.3);
+    transform: translateY(-1px);
+}
+
+button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Social Buttons */
+button[id="googleLogin"],
+button[id="googleRegister"],
+button[id="githubLogin"],
+button[id="githubRegister"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    background-color: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button[id="googleLogin"]:hover,
+button[id="googleRegister"]:hover,
+button[id="githubLogin"]:hover,
+button[id="githubRegister"]:hover {
+    background-color: #f3f4f6;
+}
+
+.dark button[id="googleLogin"],
+.dark button[id="googleRegister"],
+.dark button[id="githubLogin"],
+.dark button[id="githubRegister"] {
+    color: #f9fafb;
+    background-color: #1f2937;
+    border-color: #374151;
+}
+
+.dark button[id="googleLogin"]:hover,
+.dark button[id="googleRegister"]:hover,
+.dark button[id="githubLogin"]:hover,
+.dark button[id="githubRegister"]:hover {
+    background-color: #374151;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.25rem;
+    color: #2D6A4F;
+    border-radius: 0.25rem;
+    border: 2px solid #d1d5db;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #2D6A4F;
+    border-color: #2D6A4F;
+}
+
+/* Radio Buttons */
+input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+input[type="radio"] + div {
+    cursor: pointer;
+    border: 2px solid #e5e7eb;
+    transition: all 0.2s ease;
+}
+
+input[type="radio"]:checked + div {
+    border-color: #2D6A4F;
+    background-color: rgba(45, 106, 79, 0.05);
+}
+
+.dark input[type="radio"] + div {
+    background-color: #1f2937;
+    border-color: #374151;
+}
+
+.dark input[type="radio"]:checked + div {
+    border-color: #52B788;
+    background-color: rgba(82, 183, 136, 0.05);
+}
