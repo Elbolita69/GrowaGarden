@@ -1,5 +1,28 @@
+# Dependencies
 node_modules/
+
+# Environment files (sensitive)
 .env
+.env.local
+.env.production
+
+# Firebase (sensitive credentials)
+public/firebase-config.js
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Logs
 *.log
+
+# Firebase (cache)
 .firebase/
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp

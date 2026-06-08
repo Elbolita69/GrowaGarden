@@ -1,0 +1,30 @@
+/**
+ * Firebase Configuration - GROW A GARDEN
+ * IMPORTANT: Copy this file to firebase-config.js and fill with your own credentials
+ */
+
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+db.enablePersistence().catch((err) => {
+    if (err.code === 'failed-precondition') {
+        console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+    } else if (err.code === 'unimplemented') {
+        console.log('The current browser does not support offline persistence.');
+    }
+});
+
+window.firebase = firebase;
+window.auth = auth;
+window.db = db;

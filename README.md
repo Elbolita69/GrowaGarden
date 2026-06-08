@@ -22,7 +22,6 @@
 - [Despliegue](#-despliegue)
 - [Uso de la Aplicación](#-uso-de-la-aplicación)
 - [Contribución](#-contribución)
-- [Licencia](#-licencia)
 
 ---
 
@@ -65,7 +64,6 @@
 | Tailwind CSS | 3.x | Framework de estilos |
 | JavaScript | ES6+ | Lógica de aplicación |
 | Firebase | 9.23.0 | Backend (Auth, Firestore, Hosting) |
-| Framer Motion | - | Animaciones (CSS) |
 
 ### Paleta de Colores
 
@@ -96,58 +94,59 @@ git clone https://github.com/Elbolita69/GrowaGarden.git
 cd GrowaGarden
 ```
 
-### 2. Instalar Firebase CLI (opcional, para desarrollo local)
+### 2. Configurar Firebase (ver sección siguiente)
+
+### 3. Copiar y configurar firebase-config
 
 ```bash
-npm install -g firebase-tools
-firebase login
+cp public/firebase-config.js.example public/firebase-config.js
+# Editar firebase-config.js con tus credenciales de Firebase
 ```
-
-### 3. Configurar Firebase (ver sección siguiente)
 
 ### 4. Ejecutar en Desarrollo Local
 
 ```bash
-# Usando Firebase Hosting emulators
-firebase emulators:start
+# Abrir directamente en el navegador
+file:///path/to/project/public/index.html
 
-# O simplemente abrir en el navegador
-# file:///path/to/project/public/index.html
+# O usar Firebase emulators (requiere firebase-tools)
+firebase init emulators
+firebase emulators:start
 ```
 
 ---
 
 ## 🔥 Configuración de Firebase
 
-### 1. Crear Proyecto en Firebase Console
+### ⚠️ Importante
+
+El archivo `firebase-config.js` contiene credenciales sensibles y **NO** está incluido en el repositorio. Debes configurarlo tú mismo.
+
+### Pasos:
+
+#### 1. Crear Proyecto en Firebase Console
 
 1. Ve a [Firebase Console](https://console.firebase.google.com/)
 2. Click en "Añadir proyecto"
-3. Nombre del proyecto: `growagarden-34ddd` (o tu preference)
+3. Nombre del proyecto: `growagarden` (o tu preference)
 4. Habilitar Google Analytics (opcional)
 5. Click en "Crear proyecto"
 
-### 2. Configurar Authentication
+#### 2. Configurar Authentication
 
 1. En el menú lateral, ve a **Authentication** → **Métodos de inicio de sesión**
-2. Habilitar **Correo electrónico/contraseña**:
-   - Email/password: Habilitado
-3. Habilitar **Google**:
-   - Click en Google → Habilitar
-   - Configurar dominio de ayuda si es necesario
-4. Habilitar **GitHub**:
-   - Crear OAuth App en [GitHub Developer Settings](https://github.com/settings/developers)
-   - Client ID y Client Secret
-   - Callback URL de Firebase
+2. Habilitar **Correo electrónico/contraseña**
+3. Habilitar **Google**
+4. Habilitar **GitHub**
 
-### 3. Configurar Firestore
+#### 3. Configurar Firestore
 
 1. Ve a **Firestore Database** → **Crear base de datos**
 2. Seleccionar **Comenzar en modo de producción**
-3. Elegir ubicación (ej: `us-central`)
+3. Elegir ubicación
 4. Click en **Crear base de datos**
 
-### 4. Configurar Reglas de Firestore
+#### 4. Configurar Reglas de Firestore
 
 ```javascript
 rules_version = '2';
@@ -160,13 +159,15 @@ service cloud.firestore {
 }
 ```
 
-### 5. Obtener Configuración
+#### 5. Obtener Configuración
 
 1. Ve a **Configuración del proyecto** (⚙️)
 2. En "Tu apps", click en el icono web `</>`
 3. Registrar la app y copiar la configuración
 
-### 6. Actualizar firebase-config.js
+#### 6. Crear firebase-config.js
+
+Copia el contenido de `firebase-config.js.example` y reemplaza los valores:
 
 ```javascript
 const firebaseConfig = {
@@ -185,30 +186,30 @@ const firebaseConfig = {
 
 ```
 GrowaGarden/
-├── public/ # Directorio de Firebase Hosting
-│   ├── index.html              # Landing page
-│   ├── login.html              # Página de inicio de sesión
-│   ├── register.html           # Página de registro
-│   ├── dashboard.html          # Panel principal del usuario
-│   ├── firebase-config.js      # Configuración de Firebase
-│   ├── auth.js                 # Módulo de autenticación
-│   ├── dashboard.js           # Lógica del dashboard
-│   ├── styles.css              # Estilos CSS
-│   └── img/                    # Imágenes (logos)
+├── public/                          # Directorio de Firebase Hosting
+│   ├── index.html                   # Landing page
+│   ├── login.html                   # Página de inicio de sesión
+│   ├── register.html                # Página de registro
+│   ├── dashboard.html               # Panel principal del usuario
+│   ├── firebase-config.js.example  # Template de configuración Firebase
+│   ├── auth.js                     # Módulo de autenticación
+│   ├── dashboard.js                # Lógica del dashboard
+│   ├── styles.css                  # Estilos CSS
+│   └── img/                        # Imágenes (logos)
 │
-├── img/                         # Imágenes originales
-├── firebase.json                # Configuración de Firebase Hosting
-├── .gitignore                   # Archivos ignorados por Git
-└── README.md                    # Este archivo
+├── img/                             # Imágenes originales
+├── firebase.json                   # Configuración de Firebase Hosting
+├── .gitignore                      # Archivos ignorados por Git
+└── README.md                       # Documentación
 ```
 
 ---
 
 ## 📦 Módulos Principales
 
-### firebase-config.js
+### firebase-config.js.example
 
-Configura la conexión con Firebase y exporta los servicios.
+Template de configuración de Firebase. **Copiar a firebase-config.js y completar con credenciales.**
 
 ```javascript
 // Servicios exportados
@@ -231,21 +232,6 @@ Módulo de autenticación con las siguientes funciones:
 | `createGarden(type)` | Crea un nuevo jardín |
 | `joinGarden(inviteCode)` | Une al usuario a un jardín existente |
 
-#### Crear Usuario con Rol Espectador
-
-Todos los usuarios nuevos se crean con rol `espectador` y sin jardín asignado:
-
-```javascript
-await db.collection('users').doc(userCredential.user.uid).set({
-    name: name,
-    email: email,
-    role: 'espectador',
-    gardenId: null,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-});
-```
-
 ### dashboard.js
 
 Lógica del dashboard con las siguientes funciones:
@@ -260,8 +246,6 @@ Lógica del dashboard con las siguientes funciones:
 | `showDashboard()` | Muestra el dashboard completo |
 | `handleCreateGarden()` | Crea un jardín |
 | `handleJoinGarden()` | Une a un jardín con código |
-| `initWateringToggle()` | Inicializa control de riego |
-| `simulateWatering()` | Simula el riego automático |
 
 ### styles.css
 
@@ -336,25 +320,6 @@ function generateInviteCode() {
 }
 ```
 
-### Autenticación
-
-```javascript
-// Estados de autenticación
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        // Usuario logueado
-    } else {
-        // Usuario no logueado
-    }
-});
-
-// Métodos de login
-auth.signInWithEmailAndPassword(email, password)
-auth.signInWithPopup(provider) // Google o GitHub
-auth.createUserWithEmailAndPassword(email, password)
-auth.signOut()
-```
-
 ---
 
 ## 🚀 Despliegue
@@ -362,10 +327,13 @@ auth.signOut()
 ### Firebase Hosting
 
 ```bash
-# 1. Configurar proyecto
-firebase init hosting
+# 1. Instalar firebase-tools
+npm install -g firebase-tools
+firebase login
 
-# 2. Seleccionar directorio public como directorio de archivos
+# 2. Inicializar proyecto
+firebase init hosting
+# Seleccionar "public" como directorio de archivos
 
 # 3. Deploy
 firebase deploy --only hosting
@@ -373,13 +341,6 @@ firebase deploy --only hosting
 
 ### URL del Proyecto
 - **Producción:** https://growagarden-34ddd.web.app
-
-### Dominio Personalizado (opcional)
-
-1. Firebase Console → Hosting → **Añadir dominio personalizado**
-2. Agregar `growagarden.web.app`
-3. Configurar registros DNS según las instrucciones
-4. Esperar verificación y deploy automático
 
 ---
 
@@ -435,22 +396,18 @@ Una vez dentro del jardín:
 
 ---
 
-## 📄 Licencia
+## ⚠️ Nota de Seguridad
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto incluye un archivo `.gitignore` que exclude:
+- `public/firebase-config.js` (contiene credenciales)
+- Archivos `.env`
+- `node_modules/`
+- Archivos de sistema operativos
 
----
-
-## 👨‍💻 Autor
-
-**Grow A Garden Team**
-
-- GitHub: [Elbolita69](https://github.com/Elbolita69/GrowaGarden)
-- Live: [https://growagarden-34ddd.web.app](https://growagarden-34ddd.web.app)
+**Nunca subas archivos con credenciales reales a repositorios públicos.**
 
 ---
 
 <div align="center">
-  <p>Hecho con 🌱 y Firebase</p>
-  <p>© 2024 Grow A Garden. Todos los derechos reservados.</p>
+  <p>🌱 Grow A Garden - Sistema de Gestión de Huertos Inteligentes</p>
 </div>
