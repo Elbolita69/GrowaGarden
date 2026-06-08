@@ -41,7 +41,7 @@ body {
    Logo Typography
    ================================================ */
 .logo-text {
-    height: 32px;
+    height: 48px;
     width: auto;
     object-fit: contain;
     filter: brightness(0) invert(0.15);
@@ -53,13 +53,13 @@ body {
 
 @media (min-width: 768px) {
     .logo-text {
-        height: 40px;
+        height: 56px;
     }
 }
 
 /* Large logo for landing page */
 .logo-text-lg {
-    height: 56px;
+    height: 96px;
     width: auto;
     object-fit: contain;
     filter: brightness(0) invert(0.15);
@@ -71,20 +71,20 @@ body {
 
 @media (min-width: 768px) {
     .logo-text-lg {
-        height: 64px;
+        height: 112px;
     }
 }
 
 /* Sidebar logo */
 .logo-text-sidebar {
-    height: 24px;
+    height: 36px;
     width: auto;
     object-fit: contain;
 }
 
 @media (min-width: 1024px) {
     .logo-text-sidebar {
-        height: 28px;
+        height: 44px;
     }
 }
 
